@@ -1,4 +1,4 @@
-from urllib2 import urlopen as uReq
+from urllib import request
 from bs4 import BeautifulSoup
 from twilio.rest import Client
 import os
@@ -11,7 +11,7 @@ client = Client(twilio_account_sid, twilio_auth_token)
 
 url = 'https://warrior.uwaterloo.ca/Program/GetProgramDetails?courseId=cc2a16d7-f148-461e-831d-7d4659726dd1&semesterId=b0d461c3-71ea-458e-b150-134678037221'
 
-uClient = uReq(url)
+uClient = request.urlopen(url)
 page_html = uClient.read()
 uClient.close()
 page_soup = BeautifulSoup(page_html, "html.parser")
