@@ -6,13 +6,13 @@ import logging
 import sys
 import datetime
 
-start_time = datetime.time(9,00) #9AM
-end_time = datetime.time(19, 00) #7PM
+utc_difference = 4 # UTC time is +4 hrs on EST
+start_time = datetime.time(9 + utc_difference, 00)  # 9AM
+end_time = datetime.time(19 + utc_difference, 00)  # 7PM
 now_time = datetime.datetime.now().time()
-if not(start_time <= now_time <= end_time):
-    logging.log(msg="Current time {} is outside of 9AM and 7PM. No web scrape required".format(now_time), level=30)
+if not (start_time <= now_time <= end_time):
+    logging.log(msg="Current time {}-UTC  is outside of 9AM and 7PM. No web scrape required".format(now_time), level=30)
     sys.exit()
-
 try:
     twilio_account_sid = os.environ["TWILIO_ACCOUNT_SID"]
     twilio_auth_token = os.environ["TWILIO_AUTH_TOKEN"]
@@ -46,6 +46,8 @@ for schedule_card in schedule_cards:
 
 if message == "":
     message = "\nNo available gym reservations\n\n{}".format(url)
+    logging.error("No available gym reservations found. Exiting script.")
+    sys.exit()
 else:
     message += "\nBook CIF gym reservation now at\n\n{}".format(url)
 try:
