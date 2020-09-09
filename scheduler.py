@@ -4,6 +4,14 @@ from twilio.rest import Client
 import os
 import logging
 import sys
+import datetime
+
+start_time = datetime.time(9,00) #9AM
+end_time = datetime.time(19, 00) #7PM
+now_time = datetime.datetime.now().time()
+if not(start_time <= now_time <= end_time):
+    logging.info("Current time is outside of 9AM and 7PM. No web scrape required")
+    sys.exit()
 
 try:
     twilio_account_sid = os.environ["TWILIO_ACCOUNT_SID"]
